@@ -8,9 +8,17 @@ Although there might be an optimal strategy to play, there is always some level 
 If you beat the puzzle and would like to master it, try to finish with a smaller score.
 That would mean that you finished with less moves
 """
+
+
+# edited by : 
+# https://github.com/pousay/
+###################################
+# forked from :
+# https://github.com/hesam-mousavi/any-size-2048-Puzzle-Game/
+
+
+
 import random, sys
-import colored
-from colored import stylize
 import math
 import keyboard
 import os
@@ -281,7 +289,7 @@ class Puzzle:
         if self.canCreateBoard == True:
             self.__cls()
             self.__addRandNum()
-            top = stylize("+-----", colored.fg("red"))
+            top = "+-----"
             liter_line = "{}"
 
             for x in range(1, self.__size + 1):  # [1, 2, 3, 4] if size==4
@@ -293,27 +301,19 @@ class Puzzle:
                         self.__getX(self.last_rand) == x
                         and self.__getY(self.last_rand) == y
                     ):
-                        liter_lines += stylize("|", colored.fg("red")) + stylize(
-                            liter_line.format(self.__cellsXY[(x, y)]).center(5),
-                            colored.fg("blue"),
-                        )
+                        liter_lines += "|" + liter_line.format(self.__cellsXY[(x, y)]).center(5)
 
                     else:
-                        liter_lines += stylize("|", colored.fg("red")) + stylize(
-                            liter_line.format(self.__cellsXY[(x, y)]).center(5),
-                            colored.bg(
-                                self.__colors.get(self.__cellsXY[(x, y)], "black")
-                            ),
-                        )
+                        liter_lines += "|" + liter_line.format(self.__cellsXY[(x, y)]).center(5)
 
-                print(tops + stylize("+", colored.fg("red")))
-                print(liter_lines + stylize("|", colored.fg("red")))
+                print(tops + "+")
+                print(liter_lines + "|")
 
             directions = {"up": "↑", "down": "↓", "right": "→", "left": "←"}
             direction_arrow = directions.get(direction, "")
-            direction = "   " + stylize(direction_arrow, colored.fg("green"))
+            direction = "   " + direction_arrow
 
-            print(tops + stylize("+", colored.fg("red")) + direction)
+            print(tops + "+" + direction )
 
             # next time, the board will be created when the move is done
             self.canCreateBoard = False
@@ -323,10 +323,7 @@ class Puzzle:
             self.printGameKeys()
 
     def printScore(self):
-        print(
-            stylize("Score = ", colored.fg("red"))
-            + stylize("{}", colored.fg("red")).format(puzzle.__score)
-        )
+        print( "Score = "+ "{}".format(puzzle.__score))
 
     def printBestScore(self):
         best_score = 0
@@ -336,21 +333,22 @@ class Puzzle:
                 bs.write(str(best_score))
         else:
             best_score = self.__best_score
-        print(
-            stylize("Best Score =", colored.fg("red"))
-            + stylize(" {}".format(best_score), colored.fg("yellow"))
-        )
+        print( "Best Score =" + " {}".format(best_score) )
 
     def printGameKeys(self):
-        print(
-            stylize("↑ ← ↓ →", colored.fg("green"))
-            + " or "
-            + stylize("w a s d", colored.fg("green"))
-        )
+        print( "↑ ← ↓ →\t" + "or\t" + "W A S D\t\t[Q to exit]" )
 
 
 # START GAME
-size = input(stylize("Enter puzzle size: ", colored.fg("red")))
+size = input("Enter puzzle size [default 4] : ").strip()
+
+
+while not size.isnumeric() and size != '': 
+    size = input("Please enter a number for puzzle size [default 4] : ")
+
+# set default if entered size is nothing
+size = 4 if size == '' else int(size) 
+
 puzzle = Puzzle(size)
 puzzle.createBoard()
 puzzle.canCreateBoard = False
@@ -386,7 +384,7 @@ while True:
             continue
 
         if not puzzle.canContinue():
-            print(stylize("GAME OVER !!!", colored.fg("white") + colored.bg("red")))
+            print("GAME OVER !!!")
             while True:
                 continue_puzzle = input("continue puzzle? y/n: ")
                 if continue_puzzle == "n":
